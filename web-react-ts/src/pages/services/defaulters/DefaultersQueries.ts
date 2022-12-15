@@ -560,7 +560,7 @@ export const CONSTITUENCY_BANKING_DEFUALTERS_THIS_WEEK = gql`
     streams(where: { id: $id }) {
       id
       name
-      constitiuencyBankingDefaultersThisWeek {
+      constitiuencyFellowshipsBankingDefaultersThisWeek {
         id
         name
         leader {

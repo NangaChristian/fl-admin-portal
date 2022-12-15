@@ -4,7 +4,10 @@ import { MemberContext } from 'contexts/MemberContext'
 import { ChurchContext } from 'contexts/ChurchContext'
 import PlaceholderCustom from 'components/Placeholder'
 import { getWeekNumber } from 'jd-date-utils'
-import { CONSTITUENCY_BANKING_DEFUALTERS_THIS_WEEK } from 'pages/services/defaulters/DefaultersQueries'
+import {
+  CONSTITUENCY_BANKING_DEFUALTERS_THIS_WEEK,
+  CONSTITUENCY_FELLOWSHIPS_BANKING_DEFUALTERS_THIS_WEEK,
+} from 'pages/services/defaulters/DefaultersQueries'
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Formik, Form, FormikHelpers } from 'formik'

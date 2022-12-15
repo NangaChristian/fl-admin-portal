@@ -18,7 +18,7 @@ extend type Mutation {
 }
 
 extend type Stream {
-  constitiuencyBankingDefaultersThisWeek: [Constituency!]!
+  constitiuencyFellowshipsBankingDefaultersThisWeek: [Constituency!]!
     @cypher(
       statement: """
       MATCH (this)
@@ -45,7 +45,7 @@ extend type Stream {
       RETURN DISTINCT constituencies
       """
     )
-  constituencyBankingDefaultersThisWeekCount: Int
+  constitiuencyFellowshipsBankingDefaultersThisWeekCount: Int
     @cypher(
       statement: """
       MATCH (this)
@@ -97,7 +97,7 @@ extend type Constituency {
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
       WITH collect(record.foreignCurrency) as list, agg
-      
+
       RETURN {
         id: agg.id,
         attendance: agg.attendance,

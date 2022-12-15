@@ -336,7 +336,8 @@ extend type Stream {
        WITH DISTINCT constituencies, this
        MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
-       WITH COUNT(DISTINCT constituencies) as count
+
+      WITH COUNT(DISTINCT constituencies) as count
       RETURN
       CASE
       WHEN count < 1 THEN null
@@ -358,25 +359,6 @@ extend type Stream {
 
 
       RETURN DISTINCT constituencies
-      """
-    )
-  constituencyBankingDefaultersThisWeekCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(:Council)-[:HAS]->(constituencies) WHERE constituencies:Constituency OR constituencies:ClosedConstituency
-      MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies)
-
-      WHERE record.noServiceReason IS NULL
-        AND record.bankingSlip IS NULL
-        AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
-        AND record.tellerConfirmationTime IS NULL
-
-        WITH COUNT(DISTINCT constituencies) as count
-      RETURN
-      CASE
-      WHEN count < 1 THEN null
-      ELSE count
-      END AS result
       """
     )
 
