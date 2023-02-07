@@ -120,7 +120,7 @@ MATCH (bacenta:Bacenta)
 //constituency aggregation
 WITH bacenta as lowerChurch
 MATCH (lowerChurch)<-[:HAS]-(higherChurch)
-MATCH (lowerChurch)-[:CURRENT_HISTORY|HAS_TARGET|HAS*2..3]->(target:Target)
+MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[HAS_TARGET]->(target:Target)
 WHERE target.date = date($swellDate)
 
 WITH DISTINCT target as lowerTarget, higherChurch
@@ -142,7 +142,8 @@ MERGE (log)-[:HAS_TARGET]->(target)
 //council aggregation
 WITH higherChurch as lowerChurch
 MATCH (lowerChurch)<-[:HAS]-(higherChurch)
-MATCH (lowerChurch)-[:CURRENT_HISTORY|HAS_TARGET|HAS*2..4]->(target:Target)
+MATCH (lowerChurch)-[:HAS]->(bacenta:Bacenta)
+MATCH (bacenta)-[:CURRENT_HISTORY]->(:ServiceLog)-[HAS_TARGET]->(target:Target)
 WHERE target.date = date($swellDate)
 
 WITH DISTINCT target as lowerTarget, higherChurch
@@ -164,7 +165,8 @@ MERGE (log)-[:HAS_TARGET]->(target)
 //stream aggregation
 WITH higherChurch as lowerChurch
 MATCH (lowerChurch)<-[:HAS]-(higherChurch)
-MATCH (lowerChurch)-[:CURRENT_HISTORY|HAS_TARGET|HAS*2..5]->(target:Target)
+MATCH (lowerChurch)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)
+MATCH (bacenta)-[:CURRENT_HISTORY]->(:ServiceLog)-[HAS_TARGET]->(target:Target)
 WHERE target.date = date($swellDate)
 
 WITH DISTINCT target as lowerTarget, higherChurch
@@ -186,7 +188,8 @@ MERGE (log)-[:HAS_TARGET]->(target)
 //gatheringService
 WITH higherChurch as lowerChurch
 MATCH (lowerChurch)<-[:HAS]-(higherChurch)
-MATCH (lowerChurch)-[:CURRENT_HISTORY|HAS_TARGET|HAS*2..6]->(target:Target)
+MATCH (lowerChurch)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)
+MATCH (bacenta)-[:CURRENT_HISTORY]->(:ServiceLog)-[HAS_TARGET]->(target:Target)
 WHERE target.date = date($swellDate)
 
 WITH DISTINCT target as lowerTarget, higherChurch
@@ -208,7 +211,8 @@ MERGE (log)-[:HAS_TARGET]->(target)
 //oversight
 WITH higherChurch as lowerChurch
 MATCH (lowerChurch)<-[:HAS]-(higherChurch)
-MATCH (lowerChurch)-[:CURRENT_HISTORY|HAS_TARGET|HAS*2..7]->(target:Target)
+MATCH (lowerChurch)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)
+MATCH (bacenta)-[:CURRENT_HISTORY]->(:ServiceLog)-[HAS_TARGET]->(target:Target)
 WHERE target.date = date($swellDate)
 
 WITH DISTINCT target as lowerTarget, higherChurch

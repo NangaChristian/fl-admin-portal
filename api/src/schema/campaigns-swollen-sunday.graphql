@@ -19,6 +19,15 @@ extend type Oversight {
       RETURN {attendance: toFloat(aggregate.attendance),target: target.target, week: aggregate.week} ORDER BY aggregate.week DESC
       """
     )
+  target: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (this)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(target:Target)
+
+      RETURN target.target ORDER BY target.date DESC LIMIT 1
+      """
+    )
 }
 
 extend type GatheringService {
@@ -91,8 +100,8 @@ extend type Council {
   target: Int
     @cypher(
       statement: """
-      MATCH (this)
-      MATCH (this)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_TARGET]->(target)
+        MATCH (this)
+      MATCH (this)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(target:Target)
 
       RETURN target.target ORDER BY target.date DESC LIMIT 1
       """
@@ -118,7 +127,7 @@ extend type Constituency {
     @cypher(
       statement: """
       MATCH (this)
-      MATCH (this)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_TARGET]->(target)
+      MATCH (this)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(target:Target)
 
       RETURN target.target ORDER BY target.date DESC LIMIT 1
       """
@@ -144,7 +153,7 @@ extend type Bacenta {
     @cypher(
       statement: """
       MATCH (this)
-      MATCH (this)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_TARGET]->(target)
+      MATCH (this)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(target:Target)
 
       RETURN target.target ORDER BY target.date DESC LIMIT 1
       """
